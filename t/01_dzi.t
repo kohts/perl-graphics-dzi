@@ -1,5 +1,11 @@
+#!/usr/bin/perl
+
+BEGIN { chdir 't' if -d 't' };
+
 use strict;
 use warnings;
+
+use lib qw[../lib];
 
 use Test::More 'no_plan';
 use Data::Dumper;

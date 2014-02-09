@@ -167,7 +167,7 @@ $options{'help|?|man'} = \$help;
 
 #-- consume the command line options -----------------------------------------------------
 use Getopt::Long;
-if (!GetOptions (%options) || $help) {
+if (!GetOptions (%options) || $help || !scalar (@ARGV)) {
     use Pod::Usage;
     pod2usage(-exitstatus => 0, -verbose => 2);
 }
@@ -180,6 +180,7 @@ $log->level ($loglevel);
 
 
 use File::Path qw(make_path);
+$path .= "/" unless $path =~ m%/$%;
 make_path ($path);                                                           # assert path
 
 my @images;
