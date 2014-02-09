@@ -65,6 +65,7 @@ my $builder = Module::Build::Uploader->new(
 	'Log::Log4perl'       => 0,
 	'Image::Magick'       => 0,
 	'List::MoreUtils'     => 0,
+	'Perl6::Slurp'        => 0,
     },
     script_files       => [ 'script/deepzoom' ],
     add_to_cleanup     => [ 'Graphics-DZI-*' ],
