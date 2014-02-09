@@ -13,3 +13,4 @@
 - tests must be improved over time
 - add --overlay option to deepzoom
 
+- Overlay: specify overlay position via viewport => x+y dxxdy

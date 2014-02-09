@@ -1,0 +1,73 @@
+{
+   "abstract" : "DeepZoom Image Pyramid Generation",
+   "author" : [
+      "Robert Barta <drrho@cpan.org>"
+   ],
+   "dynamic_config" : 1,
+   "generated_by" : "Module::Build version 0.4001, CPAN::Meta::Converter version 2.110440",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Graphics-DZI",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.4"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "File::Basename" : 0,
+            "File::Path" : "2.07",
+            "File::Slurp" : 0,
+            "Getopt::Long" : 0,
+            "Image::Magick" : 0,
+            "List::MoreUtils" : 0,
+            "Log::Log4perl" : 0,
+            "Moose" : 0,
+            "Pod::Usage" : 0
+         }
+      }
+   },
+   "provides" : {
+      "Graphics::DZI" : {
+         "file" : "lib/Graphics/DZI.pm",
+         "version" : "0.07"
+      },
+      "Graphics::DZI::A4" : {
+         "file" : "lib/Graphics/DZI/A4.pm",
+         "version" : "0.02"
+      },
+      "Graphics::DZI::Document" : {
+         "file" : "lib/Graphics/DZI/Document.pm",
+         "version" : "0.02"
+      },
+      "Graphics::DZI::Files" : {
+         "file" : "lib/Graphics/DZI/Files.pm",
+         "version" : "0.02"
+      },
+      "Graphics::DZI::Hash" : {
+         "file" : "lib/Graphics/DZI/Hash.pm",
+         "version" : "0.01"
+      },
+      "Graphics::DZI::Hash::viaFileSystem" : {
+         "file" : "lib/Graphics/DZI/Hash/viaFileSystem.pm",
+         "version" : "0.01"
+      },
+      "Graphics::DZI::Overlay" : {
+         "file" : "lib/Graphics/DZI/Overlay.pm",
+         "version" : "0.02"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.07"
+}

@@ -26,7 +26,7 @@ Graphics::DZI::A4 - DeepZoom Image Pyramid Generation, specifically for document
 				     tilesize => $tilesize,
                                      path     => './',
                                      prefix   => 'xxx',
-				     'format' => $format,
+				     'format' => 'png',
                              );
     use File::Slurp;
     write_file ('xxx.xml', $dzi->descriptor );

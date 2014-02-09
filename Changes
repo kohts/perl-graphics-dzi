@@ -2,6 +2,17 @@ Revision history for Graphics-DZI
 
 !! means break of backward compatibility
 
+
+0.07    ???????????????????????
+	- tiny doc fixes
+	- added Hash as destination storage
+	- Build.PL supports debianization
+	- source_out to copy hash-based DZIs to a different location
+
+0.06    ???????????????????????????
+	- add: Graphics::DZI::Document supports multiple images as page objects
+	- add: Graphics::DZI::Document can be tiled in landscape mode
+
 0.05    Fri Apr 23 14:06:02 CEST 2010
 	- dix: doc, added hint Re: PNG
 	- fix: doc: default for tilesize is 256

@@ -5,11 +5,6 @@ use warnings;
 
 use Moose;
 
-our $log;
-use Log::Log4perl;
-BEGIN {
-    $log = Log::Log4perl->get_logger ();
-}
 
 =head1 NAME
 
@@ -184,7 +179,8 @@ itself.
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 "against all odds";
 
+__END__

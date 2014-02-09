@@ -107,16 +107,24 @@ sub crop {
     my ($tx, $ty, $tdx, $tdy) = @_;
 
     my $tile  = $self->{image}->[-1]->clone;                                                 # always take the "last" (lowest) image
-    if ($scale != 1) {                                                                       # if our image is not quite the total space
-#	warn "new canvas tile scaled $scale";
+    if ($scale > 1) {                                                                        # if our image is not quite the total space
+	$log->debug ("new canvas tile scaled $scale");
 	my ($htx, $hty, $htdx, $htdy) = map { int ($_ / $scale) }
 	                                ($tx, $ty, $tdx, $tdy);                              # rescale this tile to the image dims we have
 	$log->debug ("rescale $tx, $ty  -->  $htx, $hty");
 	$tile->Crop   (geometry => "${htdx}x${htdy}+${htx}+${hty}");                         # cut that smaller one out
 	$tile->Resize ("${tdx}x${tdy}");                                                     # and make it bigger
-    } else {                                                                                 # otherwise we are happy with what we have, dimension-wise
-#	warn "new canvas tile unscaled";
+
+    } elsif ($scale == 1) {                                                                  # otherwise we are happy with what we have, dimension-wise
+	$log->debug ("new canvas tile unscaled");
 	$tile->Crop (geometry => "${tdx}x${tdy}+${tx}+${ty}");                               # cut one out
+
+    } else { # this is the case of scale < 1, i.e. our image is too big
+	$log->debug ("new canvas tile scaled $scale");
+	my ($W, $H) = map { $_ * $scale } $tile->GetAttributes ('width', 'height');
+	$tile->Resize ("${W}x${H}");                                                         # and make it smaller
+	$tile->Crop (geometry => "${tdx}x${tdy}+${tx}+${ty}");                               # cut one out
+
     }
     $log->debug ("tiled ${tdx}x${tdy}+${tx}+${ty}");
 #    $tile->Display();
@@ -177,6 +185,7 @@ sub iterate {
 
     my ($width, $height) = ($WIDTH, $HEIGHT);
     my $scale = $self->{scale};
+    my $virginal_canvas = 1;                                                                   # by default, we are dealing with a new canvas
     foreach my $level (reverse (0..$MAXLEVEL)) {
 
 	my ($x, $col) = (0, 0);
@@ -199,9 +208,12 @@ sub iterate {
 		    } @tiles;
 		    $self->manifest ($tile, $level, $row, $col);                               # we flush it
 
+		} elsif ($virginal_canvas) {                                                   # a new canvas MUST be pre-tiled
+		    my $tile = $self->crop ($scale, $x, $y, $tile_dx, $tile_dy);               # do a crop there and try to get a tile
+		    $self->manifest ($tile, $level, $row, $col);                               # we flush it
+
 		} elsif ($level <= $CANVAS_LEVEL) {                                            # only if we are in the same granularity of the canvas
 		    my $tile = $self->crop ($scale, $x, $y, $tile_dx, $tile_dy);               # do a crop there and try to get a tile
-#warn "tile ";		    $tile->Display();
 		    $self->manifest ($tile, $level, $row, $col);                               # we flush it
 		}
 
@@ -211,8 +223,9 @@ sub iterate {
 	    $x += ($tile_dx - 2 * $self->{overlap});                                           # progress x forward
 	    $col++;                                                                            # the col count
 	}
+	$virginal_canvas = 0;                                                                  # we dealt with it
 
-#-- resizing canvas
+#-- resizing canvas & overlays
 	($width, $height) = map { POSIX::ceil ($_ / 2) } ($width, $height);
 	if (@{ $self->overlays }) {                                                            # do we have overlays from which the scale came?
 	    $scale /= 2;                                                                       # the overall magnification is to be reduced
@@ -223,7 +236,8 @@ sub iterate {
 	    # keep scale == 1
 	    $self->{image}->Resize (width => $width, height => $height);                       # resize the canvas for next iteration
 	}
-	$self->pop;                                                                            # for multi-level images
+	$virginal_canvas = 1 if
+	    $self->pop;                                                                        # for multi-level images, unconditional!
     }
 }
 
@@ -310,6 +324,8 @@ itself.
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.07';
 
 "against all odds";
+
+__END__
